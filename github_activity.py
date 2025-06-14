@@ -3,8 +3,48 @@ import sys
 import requests
 
 
+def get_type(event):
+    return event.get('type')
+
+
+def get_repo_name(event):
+    repo = event.get('rep')
+    if repo:
+        return repo.get('name')
+
+
+def display_result(map):
+    print('Output: \n')
+    for key, value in map.items():
+        print(f'- {value}  {key}')
+
+
 def fetch_events(data):
-    pass
+    event_map = {
+        'PullRequestEvent': 0,
+        'CommitCommentEvent': 0,
+        'CreateEvent': 0,
+        'DeleteEvent': 0,
+        'ForkEvent': 0,
+        'GollumEvent': 0,
+        'IssueCommentEvent': 0,
+        'IssuesEvent': 0,
+        'MemberEvent': 0,
+        'PublicEvent': 0,
+        'PullRequestReviewEvent': 0,
+        'PullRequestReviewCommentEvent': 0,
+        'PullRequestReviewThreadEvent': 0,
+        'PushEvent': 0,
+        'ReleaseEvent': 0,
+        'SponsorshipEvent': 0,
+        'WatchEvent': 0
+    }
+
+    for event in data:
+        type = get_type(event)
+        event_map[type] += 1
+
+    display_result(event_map)
 
 
 def call_api(username):
